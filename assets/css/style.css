@@ -1,0 +1,12 @@
+button {
+    margin:0 10px 10px 0;
+}
+
+.container {
+    margin: 0;
+    max-width: 100%;
+}
+
+#agreementWithGiphy {
+    display: inline;
+}
