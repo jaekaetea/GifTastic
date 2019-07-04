@@ -51,9 +51,9 @@ $(document).ready(function() {
 
 function renderPics() {
     //alert($(this).text());
-    if ($(this).text() != "Clear" && $(this).text() != "Submit") {
+    if ($(this).text() != "Clear" && $(this).text() != "Submit" && $(this).text() != "X") {
     var aURL = $(this).attr("data-noun");
-    aURL = aURL.trim();
+    //aURL = aURL.trim();
     console.log(aURL);
     var queryURL = "http://api.giphy.com/v1/gifs/search?q=" +
     aURL + "&api_key=BkaUZZWcFij6J7AoQj3WtPb1R2p9O6V9&limit=10";
@@ -64,6 +64,7 @@ function renderPics() {
     })
     .then(function(response) {
         var results = response.data;
+        console.log(results);
         for (var i = 0; i < results.length; i++) {
             if (results[i].rating !== "r" && results[i].rating !== "pg-13") {
                 var gifDiv = $("<div>");
@@ -102,6 +103,30 @@ function changeState() {
 function addButton() {
     event.preventDefault();
     var animal = $("#animal").val().trim();
+    var aURL = animal;
+    var queryURL = "http://api.giphy.com/v1/gifs/search?q=" +
+    aURL + "&api_key=BkaUZZWcFij6J7AoQj3WtPb1R2p9O6V9&limit=10";
+
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+    })
+    .then(function(response) {
+        var results = response.data;
+        var test = parseInt(response.data.length);
+        console.log(test);
+        if (test === 0) {
+            $("#animal").val("");
+            $("input[type=checkbox]").prop("checked", false);
+            alert("Not a valid entry.");
+        }
+        else {
+            addButton2(animal);
+        }
+    });
+};
+
+function addButton2(animal) {
     if ($("input[type=checkbox]").prop("checked")) {
         //alert("yasss");
         $("input[type=checkbox]").prop("checked", false);
@@ -115,7 +140,6 @@ function addButton() {
     $("#animal").val("");
     //WHY WOULD THE PAGE REFRESH WITHOUT THIS LINE!? JUST WHY?!
     return false;
-    
 };
 
 function clear() {
@@ -137,3 +161,4 @@ $(document).on("click", "button", renderPics);
 
 $(document).on("click", "#submit", addButton);
 });
+
