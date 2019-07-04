@@ -25,7 +25,15 @@ function favCreation() {
         var aBtn = $("<button>");
         aBtn.attr("data-noun", element);
         aBtn.attr("class", "btn btn-info");
-        aBtn.text(element);
+        var space = "     ";
+        aBtn.text(element+space);
+        
+        var check = $("<button>");
+        //check.attr("data-noun", index);
+        check.addClass("checkbox");
+        check.text("X");
+        check.css("color", "red");
+        aBtn = aBtn.append(check);
         
         $(".favorites").append(aBtn);
     });
@@ -33,11 +41,19 @@ function favCreation() {
 
 $(document).ready(function() {
     btnCreation();
+    fAnimals = JSON.parse(localStorage.getItem("fAnimals"));
+
+    if (!Array.isArray(fAnimals)) {
+        fAnimals = [];
+    }
+    favCreation();
+
 
 function renderPics() {
     //alert($(this).text());
     if ($(this).text() != "Clear" && $(this).text() != "Submit") {
     var aURL = $(this).attr("data-noun");
+    aURL = aURL.trim();
     console.log(aURL);
     var queryURL = "http://api.giphy.com/v1/gifs/search?q=" +
     aURL + "&api_key=BkaUZZWcFij6J7AoQj3WtPb1R2p9O6V9&limit=10";
@@ -90,6 +106,7 @@ function addButton() {
         //alert("yasss");
         $("input[type=checkbox]").prop("checked", false);
         fAnimals.push(animal);
+        localStorage.setItem("fAnimals", JSON.stringify(fAnimals));
         favCreation();
     } else {
         animals.push(animal);
@@ -104,12 +121,13 @@ function addButton() {
 function clear() {
     $("#gifs-appear-here").html("");
 };
-/*
-function renderFav() {
-    $(".favorites").empty();
 
-    var fAnimals = 
-}*/
+$(document).on("click", ".checkbox", function() {
+    var aF = $(this).attr("data-noun");
+    fAnimals.splice(aF, 1);
+    favCreation();
+    localStorage.setItem("fAnimals", JSON.stringify(fAnimals));
+});
 
 $(document).on("click", ".gif", changeState);
 
@@ -118,10 +136,4 @@ $(document).on("click", "#clear", clear);
 $(document).on("click", "button", renderPics);
 
 $(document).on("click", "#submit", addButton);
-/*
-$(document.body).on("click", ".xBox", function() {
-    var aNUmber = $(this).attr("data-noun");
-    $("#data-noun" + number).remove();
-});
-*/
 });
