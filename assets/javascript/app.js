@@ -97,7 +97,7 @@ function renderPics() {
 
 function addNews(aURL) {
     $("#well-section").html("");
-    var queryURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=R1a31F4tBjCUaM2ho8GtIFsrSdtXt30M&q=10+" + aURL;
+    var queryURL = "http://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=R1a31F4tBjCUaM2ho8GtIFsrSdtXt30M&q=10+" + aURL;
     $.ajax({
         url: queryURL,
         method: "GET"
