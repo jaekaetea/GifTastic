@@ -40,6 +40,7 @@ function favCreation() {
 }
 
 $(document).ready(function() {
+    $("#wrong").css("display", "none");
     btnCreation();
     fAnimals = JSON.parse(localStorage.getItem("fAnimals"));
 
@@ -50,46 +51,92 @@ $(document).ready(function() {
 
 
 function renderPics() {
-    //alert($(this).text());
-    if ($(this).text() != "Clear" && $(this).text() != "Submit" && $(this).text() != "X") {
-    var aURL = $(this).attr("data-noun");
-    //aURL = aURL.trim();
-    console.log(aURL);
-    var queryURL = "http://api.giphy.com/v1/gifs/search?q=" +
-    aURL + "&api_key=BkaUZZWcFij6J7AoQj3WtPb1R2p9O6V9&limit=10";
+    $("#wrong").css("display", "none");
+    if ($(this).text() == "Clear" || $(this).text() == "Submit" || $(this).text() == "X") {
+        console.log($(this).text());
+        return false;
+    } else {
+        var aURL = $(this).attr("data-noun");
+        //aURL = aURL.trim();
+        console.log(aURL);
+        var queryURL = "http://api.giphy.com/v1/gifs/search?q=" +
+        aURL + "&api_key=BkaUZZWcFij6J7AoQj3WtPb1R2p9O6V9&limit=10";
 
+        $.ajax({
+            url: queryURL,
+            method: "GET"
+        })
+        .then(function(response) {
+            var results = response.data;
+            console.log(results);
+            for (var i = 0; i < results.length; i++) {
+                if (results[i].rating !== "r" && results[i].rating !== "pg-13") {
+                    var gifDiv = $("<div>");
+                    var rating = results[i].rating;
+                    var p = $("<p>").text("Rating: " + rating);
+                    $(p).css("font-weight", "bold");
+                    var gif = $("<img>");
+                    $(gif).css("margin", "0 20px 20px 0");
+                    $(gif).css("height", "200px");
+                    $(gif).attr("src", results[i].images.fixed_height_still.url);
+                    $(gif).attr("data-still", results[i].images.fixed_height_still.url);
+                    $(gif).attr("data-animate", results[i].images.fixed_height.url);
+                    $(gif).attr("data-state", "still");
+                    $(gif).attr("class", "gif");
+                    $(gifDiv).css("float", "left");
+                    $(gifDiv).append(p);
+                    $(gifDiv).append(gif); //Instruction 5 says "Under every gif, display its rating" but video shows above
+
+                    $("#gifs-appear-here").prepend(gifDiv);
+                }
+            }
+            addNews(aURL); 
+        }); 
+    }
+};
+
+function addNews(aURL) {
+    $("#well-section").html("");
+    var queryURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=R1a31F4tBjCUaM2ho8GtIFsrSdtXt30M&q=10+" + aURL;
     $.ajax({
         url: queryURL,
         method: "GET"
-    })
-    .then(function(response) {
-        var results = response.data;
-        console.log(results);
-        for (var i = 0; i < results.length; i++) {
-            if (results[i].rating !== "r" && results[i].rating !== "pg-13") {
-                var gifDiv = $("<div>");
-                var rating = results[i].rating;
-                var p = $("<p>").text("Rating: " + rating);
-                $(p).css("font-weight", "bold");
-                var gif = $("<img>");
-                $(gif).css("margin", "0 20px 20px 0");
-                $(gif).css("height", "200px");
-                $(gif).attr("src", results[i].images.fixed_height_still.url);
-                $(gif).attr("data-still", results[i].images.fixed_height_still.url);
-                $(gif).attr("data-animate", results[i].images.fixed_height.url);
-                $(gif).attr("data-state", "still");
-                $(gif).attr("class", "gif");
-                $(gifDiv).css("float", "left");
-                $(gifDiv).append(p);
-                $(gifDiv).append(gif); //Instruction 5 says "Under every gif, display its rating" but video shows above
+    }).done(function(NYTData) {
+        for (var i = 0; i < 3; i++) {
+            var articleCounter = i;
+            articleCounter++;
+            var wellSection = $("<div>");
+            wellSection.addClass("well");
+            wellSection.attr("id", "article-well-" + articleCounter);
+            $("#well-section").append(wellSection);
 
-                $("#gifs-appear-here").prepend(gifDiv);
+            if (NYTData.response.docs[i].headline !== "null") {
+                $("#article-well-" + articleCounter)
+                    .append(
+                    "<h4 class='articleHeadline'><span class='label label-primary'>" +
+                    articleCounter + ") </span><strong> " +
+                    NYTData.response.docs[i].headline.main + "</strong></h4>"
+                );
             }
+            if (NYTData.response.docs[i].byline && NYTData.response.docs[i].byline.original) {
+                $("#article-well-" + articleCounter)
+                  .append("<h6>" + NYTData.response.docs[i].byline.original + "</h6>");
+            }
+            $("#article-well-" + articleCounter)
+                .append("<h6>Section: " + NYTData.response.docs[i].section_name + "</h6>");
+            $("#article-well-" + articleCounter)
+                .append("<h6>" + NYTData.response.docs[i].pub_date + "</h6>");
+            $("#article-well-" + articleCounter)
+                .append(
+                  "<a href='" + NYTData.response.docs[i].web_url + "'>" +
+                  NYTData.response.docs[i].web_url + "</a><br>"
+            );
         }
-    }); }
-};
+    });
+}
 
 function changeState() {
+    $("#wrong").css("display", "none");
     var state = $(this).attr("data-state");
     if (state === "still") {
         $(this).attr("src", $(this).attr("data-animate"));
@@ -118,9 +165,10 @@ function addButton() {
         if (test === 0) {
             $("#animal").val("");
             $("input[type=checkbox]").prop("checked", false);
-            alert("Not a valid entry.");
+            $("#wrong").show();
         }
         else {
+            $("#wrong").css("display", "none");
             addButton2(animal);
         }
     });
@@ -143,7 +191,9 @@ function addButton2(animal) {
 };
 
 function clear() {
+    $("#wrong").css("display", "none");
     $("#gifs-appear-here").html("");
+    $("#well-section").html("");
 };
 
 $(document).on("click", ".checkbox", function() {

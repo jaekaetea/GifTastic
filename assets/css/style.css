@@ -10,3 +10,18 @@ button {
 #agreementWithGiphy {
     display: inline;
 }
+
+.well {
+    border: 2px solid #17a2b8;
+    overflow: auto;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+}
+
+h3 {
+    background-color: #17a2b8;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+}
