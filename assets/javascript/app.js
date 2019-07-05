@@ -59,7 +59,7 @@ function renderPics() {
         var aURL = $(this).attr("data-noun");
         //aURL = aURL.trim();
         console.log(aURL);
-        var queryURL = "http://api.giphy.com/v1/gifs/search?q=" +
+        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
         aURL + "&api_key=BkaUZZWcFij6J7AoQj3WtPb1R2p9O6V9&limit=10";
 
         $.ajax({
@@ -97,7 +97,7 @@ function renderPics() {
 
 function addNews(aURL) {
     $("#well-section").html("");
-    var queryURL = "http://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=R1a31F4tBjCUaM2ho8GtIFsrSdtXt30M&q=10+" + aURL;
+    var queryURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=R1a31F4tBjCUaM2ho8GtIFsrSdtXt30M&q=10+" + aURL;
     $.ajax({
         url: queryURL,
         method: "GET"
