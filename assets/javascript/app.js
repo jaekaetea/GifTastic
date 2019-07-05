@@ -128,7 +128,7 @@ function addNews(aURL) {
                 .append("<h6>" + NYTData.response.docs[i].pub_date + "</h6>");
             $("#article-well-" + articleCounter)
                 .append(
-                  "<a href='" + NYTData.response.docs[i].web_url + "'>" +
+                  "<a href='" + NYTData.response.docs[i].web_url + "' target='_blank'>" +
                   NYTData.response.docs[i].web_url + "</a><br>"
             );
         }
