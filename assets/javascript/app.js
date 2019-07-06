@@ -151,7 +151,7 @@ function addButton() {
     event.preventDefault();
     var animal = $("#animal").val().trim();
     var aURL = animal;
-    var queryURL = "http://api.giphy.com/v1/gifs/search?q=" +
+    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
     aURL + "&api_key=BkaUZZWcFij6J7AoQj3WtPb1R2p9O6V9&limit=10";
 
     $.ajax({
