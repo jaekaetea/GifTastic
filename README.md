@@ -2,6 +2,8 @@ GifTastic
 
 See my assignment here: https://jaekaetea.github.io/GifTastic/
 
+-   As the website saves user input into your local storage, you may need to give your browser permission to load all the scripts to use the whole functionality of the website.  
+
 Overview
 
 In this assignment, you'll use the GIPHY API to make a dynamic web page that populates with gifs of your choice. To finish this task, you must call the GIPHY API and use JavaScript and jQuery to change the HTML of your site.
