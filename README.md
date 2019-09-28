@@ -1,4 +1,4 @@
-#GifTastic
+# GifTastic
 
 See my assignment here: https://jaekaetea.github.io/GifTastic/
 
