@@ -1,8 +1,27 @@
-GifTastic
+#GifTastic
 
 See my assignment here: https://jaekaetea.github.io/GifTastic/
 
--   As the website saves user input into your local storage, you may need to give your browser permission to load all the scripts to use the whole functionality of the website.  
+
+In this app, users can choose animal gifs by clicking on buttons at the top of the screen.
+
+![results](/assets/displayShown.png)
+
+Additionally, users are able to add additional animals and save their favourites to their local storage, where even after refreshing the page, they are able to see their favourites saved in the favourite section.
+
+![resultsShown](/assets/favouritesShown.png)
+
+
+### Techologies Used
+HTML, CSS, Bootstrap, JavaScript, Local Storage, Ajax, and jQuery. 
+
+
+### Enjoy!
+
+
+---
+
+## Class Instructions
 
 Overview
 
